@@ -1,4 +1,15 @@
 import formatCurrency from "../scripts/utils/money.js";
+export function getProduct(productId) {
+  let matchingProduct;
+
+  products.forEach((product) =>{
+    if(product.id === productId){
+        matchingProduct = product;
+        }
+        });
+
+        return matchingProduct;
+}
 
 class Product {
   id;
@@ -54,8 +65,27 @@ const tshirt = new Clothing({
 });
 
 
+export let products = [];
+
+export function loadProducts(fun){
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      if (productDetails.type === 'clothing'){
+        return new Clothing(productDetails);
+      }
+      return new Product(productDetails);
+    });
+    console.log('load products');
+    fun();
+  });
+
+  xhr.open('GET','https://supersimplebackend.dev/products');
+  xhr.send();
+}
 
 
+/*
 export function getProduct(productId) {
   let matchingProduct;
 
@@ -733,3 +763,5 @@ export const products = [
   }
   return new Product(productDetails);
 });
+
+*/
