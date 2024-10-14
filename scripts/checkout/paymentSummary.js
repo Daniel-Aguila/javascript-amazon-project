@@ -30,7 +30,7 @@ export function renderPaymentSummary(){
 
             <div class="payment-summary-row">
                 <div>Shipping &amp; handling:</div>
-                <div class="payment-summary-money">$${shippingPriceCents}</div>
+                <div class="payment-summary-money">$${formatCurrency(shippingPriceCents)}</div>
             </div>
 
             <div class="payment-summary-row subtotal-row">
