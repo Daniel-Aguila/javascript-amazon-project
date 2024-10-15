@@ -1,18 +1,13 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-import { loadProducts } from "../data/products.js";
-import {loadCart} from '../data/cart.js'
+import { loadProducts, loadProductsFetch} from "../data/products.js";
 
 //resolve lets us control when to go to the next step
 //we waited until loadProducts finishes, we can wait till one step finishes before going to next step
 
 //promises are a better way to wait for async functions
 Promise.all([
-    new Promise((resolve) => {
-        loadProducts(() => {
-            resolve('value1');
-        });
-    }),
+    loadProductsFetch(),
     new Promise((resolve) => {
         loadCart(()=>{
             resolve();
@@ -20,7 +15,7 @@ Promise.all([
     })
 
 ]).then((value) => {
-    console.log(values);
+    console.log(value);
     renderOrderSummary();
     renderPaymentSummary();
 });

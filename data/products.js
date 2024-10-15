@@ -67,17 +67,36 @@ const tshirt = new Clothing({
 
 export let products = [];
 
-export function loadProducts(fun){
-  const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', () => {
-    products = JSON.parse(xhr.response).map((productDetails) => {
+export function loadProductsFetch(){
+  //this sends a request to the backend
+  //fetch uses a promise
+
+  //sends a request to backend and when we get a response that's saved to 'response'
+  //we can use it
+  const promise = fetch('https://supersimplebackend.dev/products').then((response) =>{
+    return response.json() //gives us the json attached to the response
+    //it is asynchronous, returns a promise
+  }).then((productData) =>{
+    products = productData.map((productDetails) => {
       if (productDetails.type === 'clothing'){
         return new Clothing(productDetails);
       }
       return new Product(productDetails);
     });
     console.log('load products');
-    fun();
+  });
+
+  return promise;
+}
+
+loadProductsFetch().then(() =>{
+  console.log('next step');
+});
+
+export function loadProducts(fun){
+  const xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', () => {
+    
   });
 
   xhr.open('GET','https://supersimplebackend.dev/products');
